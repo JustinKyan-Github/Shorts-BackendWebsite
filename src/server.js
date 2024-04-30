@@ -17,7 +17,7 @@ global.user_db = require("./components/dbModule/fsdb.js")(userDbConn, userDbSche
 global.video_db = require("./components/dbModule/fsdb.js")(videoDbConn, videoDbSchema);
 
 app.use(session({
-    secret: [process.env.SESSION_SECRET],
+    secret: 'SomeSecretCode##LoadFromEnviromentVariable',
     saveUninitialized:true,
     resave:false,
     cookie: { maxAge: 3456000000 }})
