@@ -1,0 +1,78 @@
+doctype html
+html
+  head
+    title Dashboard
+    block css 
+      link(rel="stylesheet", href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css")
+      style.
+        .video-container {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          margin: 0 -5px; 
+        }
+        .video-item {
+          flex: 0 0 calc(25% - 10px); 
+          margin: 5px; 
+          position: relative;
+          text-align: center;
+        }
+        .video-item iframe {
+          width: 100%;
+          height: calc(100% - 30px);
+          border: none;
+        }
+
+    block script
+      script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js")
+      script(src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js")
+      script(src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js")
+  body.bg-info 
+    .row
+      .col 
+        nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.border-bottom.border-dark
+          div.collapse.navbar-collapse.justify-content-end.dropstart
+            div.navbar-nav.mx-auto
+                li.nav-item.active
+                    a.nav-link.btn.btn-warning.mx-2(href="/video/dashboard") Dashboard
+                li.nav-item
+                    a.nav-link.btn.btn-warning.mx-2.text-secondary(href="/video/new_video") New Video
+                if isAuthenticated
+                    a.nav-link.btn.btn-warning.mx-2.text-secondary(href="/auth/logout") Logout
+                else
+                    a.nav-link.btn.btn-warning.mx-2.text-secondary(href="/auth/login") Login
+                li.nav-item
+                    a.nav-link.btn.btn-warning.mx-2.text-secondary(href="/auth/register") Register
+    .mt-5
+    form(action="/video/dashboard", method="post")
+      div.row.justify-content-center
+        button.btn.btn-secondary.border.border-dark.rounded.mx-1.text-warning(type='submit' name='filter' value='all') All
+        button.btn.btn-secondary.border.border-dark.rounded.mx-1.text-warning(type='submit' name='filter' value='mine') Mine
+      div.video-container#videoRow
+        if videoList && videoList.length > 0
+          each video, index in videoList
+            .video-item
+              h6= video.title
+              iframe.border.border-dark(src="https://youtube.com/embed/" + video.url title=video.title frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen)
+
+script.
+  // Dynamically adjust iframe dimensions
+  document.addEventListener('DOMContentLoaded', function() {
+    const aspectRatio = 9 / 16;
+
+    function resizeIframes() {
+      const videoContainer = document.getElementById('videoRow');
+      const videos = videoContainer.querySelectorAll('iframe');
+      const containerWidth = videoContainer.offsetWidth;
+
+      const newWidth = (containerWidth * 0.15) - 10;
+      const newHeight = newWidth / aspectRatio;
+
+      videos.forEach(video => {
+        video.style.width = newWidth + 'px';
+        video.style.height = newHeight + 'px';
+      });
+    }
+    resizeIframes();
+    window.addEventListener('resize', resizeIframes);
+  });

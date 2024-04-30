@@ -1,0 +1,57 @@
+doctype html
+html
+    head
+        title #{title}
+        block css
+          <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+        block script
+          <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+          <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    body.bg-info
+        .row
+            .col 
+              nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.border-bottom.border-dark
+                div.collapse.navbar-collapse.justify-content-end.dropstart
+                  div.navbar-nav.mx-auto
+                    li.nav-item
+                        a.nav-link.btn.btn-warning.mx-2.text-secondary(href="/video/dashboard") Dashboard
+                    li.nav-item
+                        a.nav-link.btn.btn-warning.mx-2.text-secondary(href="/video/new_video") New Video
+                    if isAuthenticated
+                        a.nav-link.btn.btn-warning.mx-2.text-secondary(href="/auth/logout") Logout
+                    else
+                        a.nav-link.btn.btn-warning.mx-2(href="/auth/login") Login
+                    li.nav-item
+                        a.nav-link.btn.btn-warning.mx-2.text-secondary(href="/auth/register") Register
+        .mt-4
+            .row 
+                .col 
+                    .container.pt-5
+                        #form-container.border.border-dark.bg-light.pt-5
+                            form#login-form(method='POST' role='form' action=route_path)
+                                #Header-Login-Form.container.justify-content-center.form-group
+                                    h1.text-center.text-secondary Log in
+                                    p.text-center.text-secondary Sign in to your account
+                                    div.form-group.text-center
+                                        if notAuthenticated 
+                                            p.text-danger #{'Sign into your account to access content'}
+                                #Body-Login-Form.container.justify-content-center.form-group
+                                    div.form-group
+                                        label.text-secondary(for='userIdentifier')
+                                            b E-mail Address or Username:
+                                        input.form-control.p-3#userIdentifier(type='text' name='userIdentifier' placeholder="e.g 'John Smith' or 'JohnSmith123@example.com'" required)
+                                    div.form-group
+                                        label.text-secondary(for='accountKey')
+                                            b Password:
+                                        input.form-control.p-3#accountKey(type='accountKey' name='accountKey' placeholder='e.g Password123@' required)
+                                    div.form-group.text-center
+                                        button.btn.btn-primary(type='submit' name) Login
+                                    div.form-group.text-center
+                                        if errorMessage
+                                            p.text-danger #{errorMessage}
+                                #registerHook.container.text-center.form-group
+                                    p.text-secondary
+                                    | Need an Account? 
+                                    a(href='/auth/register') Register an Account by clicking here.

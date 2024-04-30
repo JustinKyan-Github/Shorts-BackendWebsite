@@ -1,0 +1,74 @@
+doctype html
+html
+    head
+        title #{title}
+        block css
+          <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+        block script
+          <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+          <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    body.bg-info
+        .row
+            .col 
+                nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.border-bottom.border-dark
+                    div.collapse.navbar-collapse.justify-content-end.dropstart
+                        div.navbar-nav.mx-auto
+                            li.nav-item
+                                a.nav-link.btn.btn-warning.mx-2.text-secondary(href="/video/dashboard") Dashboard
+                            li.nav-item.active
+                                a.nav-link.btn.btn-warning.mx-2(href="/video/new_video") New Video
+                            if isAuthenticated
+                                a.nav-link.btn.btn-warning.mx-2.text-secondary(href="/auth/logout") Logout
+                            else
+                                a.nav-link.btn.btn-warning.mx-2.text-secondary(href="/auth/login") Login
+                            li.nav-item.active
+                                a.nav-link.btn.btn-warning.mx-2.text-secondary(href="/auth/register") Register
+        .mt-4
+            .row 
+                .col 
+                    .container.pt-5
+                        #form-container.border.border-dark.bg-light.pt-5
+                            form#upload-form(method='POST' role='form' action=route_path)
+                                #Header-Upload-Form.container.justify-content-center.form-group
+                                    h1.text-center.text-secondary Share a Video
+                                    p.text-center.text-secondary Upload a Video URL and Title to share with the world!
+                                    div.form-group.text-center
+                                        if uploadSuccess 
+                                            p.text-success #{'Video Upload Complete!'}
+                                #Body-Upload-Form.container.justify-content-center.form-group
+                                    div.form-group
+                                        label.text-secondary(for='url')
+                                            b Video URL:
+                                        input.form-control.p-3#url(type='text' name='url' placeholder="e.g 'https://www.youtube.com/shorts/example'" required)
+                                    div.form-group
+                                        label.text-secondary(for='title')
+                                            b Video Title:
+                                        input.form-control.p-3#title(type='text' name='title' placeholder='e.g Example Video Title' required)
+                                    div.form-group.text-center
+                                        button.btn.btn-primary(type='submit' name) Upload
+                                #dashboardHook.container.text-center.form-group
+                                    p.text-secondary
+                                    | Check Out New Videos? 
+                                    a(href='video/dashboard/all') Go to Your Dashboard by Clicking Here.
+script.
+    document.addEventListener('DOMContentLoaded', function() {
+        // Prune'https://www.youtube.com/shorts/' from url
+        function removeShortsPrefix(url) {
+            return url.replace('https://www.youtube.com/shorts/', '');
+        }
+        
+        document.getElementById('upload-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            var urlInput = document.getElementById('url');
+            var url = urlInput.value;
+
+            var prunedUrl = removeShortsPrefix(url);
+
+            urlInput.value = prunedUrl;
+
+            this.submit();
+        });
+    });

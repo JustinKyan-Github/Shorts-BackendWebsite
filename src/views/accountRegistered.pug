@@ -1,0 +1,36 @@
+doctype html
+html
+    head
+        title Dashboard
+        block css
+          <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+        block script
+          <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+          <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    body.bg-info
+        .row
+            .col 
+              nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.border-bottom.border-dark
+                div.collapse.navbar-collapse.justify-content-end.dropstart
+                  div.navbar-nav.mx-auto
+                    li.nav-item
+                        a.nav-link.btn.btn-warning.mx-2.text-secondary(href="/video/dashboard") Dashboard
+                    li.nav-item
+                        a.nav-link.btn.btn-warning.mx-2.text-secondary(href="/video/new_video") New Video
+                    if isAuthenticated
+                        a.nav-link.btn.btn-warning.mx-2.text-secondary(href="/auth/logout") Logout
+                    else
+                        a.nav-link.btn.btn-warning.mx-2.text-secondary(href="/auth/login") Login
+                    li.nav-item
+                        a.nav-link.btn.btn-warning.mx-2.text-secondary(href="/auth/register") Register
+        .mt-5
+            .row 
+                .col
+                    .mt-5
+                        div.jumbotron.w-50.mx-auto.border.border.border-secondary
+                            div.jumbotron-body
+                            h2.jumbotron-text.text-center.text-success Your account has been Registered!
+                            p.mt-4.text-center
+                                a.h4.text-info.link-dark(href='/auth/login') Click here to go to the login page
